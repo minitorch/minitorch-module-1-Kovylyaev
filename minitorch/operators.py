@@ -3,7 +3,7 @@
 import math
 
 # ## Task 0.1
-from typing import Callable, Iterable, List
+from typing import Any, Callable, Iterable, List
 
 #
 # Implementation of a prelude of elementary functions.
@@ -87,7 +87,7 @@ def sigmoid(x: float) -> float:
 
     for stability.
     """
-    return 1.0 / (1.0 + math.e**(-x)) if x >= 0 else math.e**x / (1.0 + math.e**x)
+    return float(1.0 / (1.0 + math.e**(-x)) if x >= 0 else math.e**x / (1.0 + math.e**x))
 
 
 def relu(x: float) -> float:
@@ -150,7 +150,7 @@ def relu_back(x: float, d: float) -> float:
 
 # TODO: Implement for Task 0.3.
 
-def map(l: Iterable[float], func: Callable[[float], float]) -> Iterable:
+def map(l: Iterable[Any], func: Callable[[Any], Any]) -> Iterable[Any]:
     r"Higher-order function that applies a given function to each element of an iterable"
     res = []
     for el in l:
@@ -158,17 +158,17 @@ def map(l: Iterable[float], func: Callable[[float], float]) -> Iterable:
     return res
 
 
-def zipWith(l1: Iterable[float], l2: Iterable[float], func: Callable[[float], float]) -> Iterable:
-    r"Higher-order function that applies a given function to each element of an iterable"
+def zipWith(l1: Iterable[Any], l2: Iterable[Any], func: Callable[[Any, Any], Any]) -> Iterable[Any]:
+    r"Higher-order function that combines elements from two iterables using a given function"
     res = []
     for el1, el2 in zip(l1, l2):
         res.append(func(el1, el2))
     return res
 
 
-def reduce(l: Iterable[float], func: Callable[[float], float]) -> float:
-    r"Higher-order function that applies a given function to each element of an iterable"
-    res = 0
+def reduce(l: Iterable[Any], func: Callable[[Any, Any], Any]) -> Any:
+    r"Higher-order function that reduces an iterable to a single value using a given function"
+    res = 0.0
     first = True
     for el in l:
         if first:
@@ -179,21 +179,24 @@ def reduce(l: Iterable[float], func: Callable[[float], float]) -> float:
     return res
 
 
-def negList(l: List[float]) -> List[float]:
+# Функции ниже могут вызваны не только для float, но некотрые и для матриц, строк и т.д. Поэтому Any
+
+
+def negList(l: List[Any]) -> List[Any]:
     r"Negate all elements in a list using map"
     return map(l, neg)
 
 
-def addLists(l1: List[float], l2: List[float]) -> List[float]:
+def addLists(l1: List[Any], l2: List[Any]) -> List[Any]:
     r"Add corresponding elements from two lists using zipWith"
     return zipWith(l1, l2, add)
 
 
-def sum(l: List[float]) -> float:
+def sum(l: List[Any]) -> Any:
     r"Sum all elements in a list using reduce"
     return reduce(l, add)
 
 
-def prod(l: List[float]) -> List[float]:
+def prod(l: List[Any]) -> Any:
     r"Calculate the product of all elements in a list using reduce"
     return reduce(l, mul)
