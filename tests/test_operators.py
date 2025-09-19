@@ -116,7 +116,7 @@ def test_sigmoid(a: float, b: float) -> None:
     assert_close(1.0 - sigmoid(a), sigmoid(-a))
     if a == 0.0:
         assert sigmoid(a) == 0.5
-    
+
     sig_min = sigmoid(min(a, b))
     sig_max = sigmoid(max(a, b))
     if not is_close(a, b) and not is_close(sig_min, sig_max):
@@ -159,7 +159,6 @@ def test_other(a: float, b: float, c: float) -> None:
     Associativity"""
     assert_close(mul(a, mul(b, c)), mul(mul(a, b), c))
     assert_close(add(a, add(b, c)), add(add(a, b), c))
-    
 
 
 # ## Task 0.3  - Higher-order functions
