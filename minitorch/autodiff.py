@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Iterable, List, Tuple
+from typing import Any, Iterable, Tuple
 
 from typing_extensions import Protocol
 
@@ -22,8 +22,10 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
     Returns:
         An approximation of $f'_i(x_0, \ldots, x_{n-1})$
     """
-    # TODO: Implement for Task 1.1.
-    raise NotImplementedError("Need to implement for Task 1.1")
+    vals_plus, vals_minus = list(vals), list(vals)
+    vals_plus[arg] += epsilon
+    vals_minus[arg] -= epsilon
+    return (f(*vals_plus) - f(*vals_minus)) / 2 / epsilon
 
 
 variable_count = 1
@@ -61,8 +63,15 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     Returns:
         Non-constant Variables in topological order starting from the right.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError("Need to implement for Task 1.4")
+    if variable.is_leaf():
+        return [variable]
+    res: list[Variable] = []
+    parents = variable.parents
+    for parent in parents:
+        res += topological_sort(parent)
+        res.append(parent)
+    res.append(variable)
+    return res
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
@@ -76,8 +85,12 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
 
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError("Need to implement for Task 1.4")
+    if variable.is_leaf():
+        variable.accumulate_derivative(deriv)
+        return
+    pairs = variable.chain_rule(deriv)
+    for (parent_var, parent_deriv) in pairs:
+        backpropagate(parent_var, parent_deriv)
 
 
 @dataclass
