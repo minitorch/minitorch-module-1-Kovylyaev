@@ -19,6 +19,7 @@ from .scalar_functions import (
     ScalarFunction,
     Sigmoid,
 )
+from .operators import zipWith
 
 ScalarLike = Union[float, int, "Scalar"]
 
@@ -39,7 +40,7 @@ class ScalarHistory:
     last_fn: Optional[Type[ScalarFunction]] = None
     ctx: Optional[Context] = None
     inputs: Sequence[Scalar] = ()
-
+   
 
 # ## Task 1.2 and 1.4
 # Scalar Forward and Backward
@@ -163,8 +164,13 @@ class Scalar:
         assert h.last_fn is not None
         assert h.ctx is not None
 
-        # TODO: Implement for Task 1.3.
-        raise NotImplementedError("Need to implement for Task 1.3")
+        last_fn = h.last_fn
+        input_vars = h.inputs
+        ctx = h.ctx
+
+        return list(zipWith(input_vars, list(last_fn._backward(ctx, d_output)), lambda x, y: (x, y)))
+    # Чтобы не забыть: возвращает список пар - (входная переменная, производная last_fn по этой переменной)
+        
 
     def backward(self, d_output: Optional[float] = None) -> None:
         """
