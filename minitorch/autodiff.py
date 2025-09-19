@@ -68,7 +68,7 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     res = []
     parents = variable.parents
     for parent in parents:
-        res += parent.topological_sort(parent)
+        res += topological_sort(parent)
         res.append(parent)
     res.append(variable)
     return res
