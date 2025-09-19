@@ -66,7 +66,7 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     if variable.is_leaf():
         return [variable]
     res = []
-    parents = variable.parents()
+    parents = variable.parents
     for parent in parents:
         res += parent.topological_sort(parent)
         res.append(parent)

@@ -19,7 +19,6 @@ from .scalar_functions import (
     ScalarFunction,
     Sigmoid,
 )
-from .operators import zipWith
 
 ScalarLike = Union[float, int, "Scalar"]
 
@@ -165,7 +164,7 @@ class Scalar:
         assert h.ctx is not None
 
         last_fn = h.last_fn
-        input_vars = self.parents
+        input_vars = list(self.parents)
         ctx = h.ctx
 
         res = []
