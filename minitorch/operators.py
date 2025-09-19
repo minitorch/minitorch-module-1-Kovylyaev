@@ -184,12 +184,12 @@ def reduce(l: Iterable[Any], func: Callable[[Any, Any], Any]) -> Any:
 
 def negList(l: List[Any]) -> List[Any]:
     r"Negate all elements in a list using map"
-    return map(l, neg)
+    return list(map(l, neg))
 
 
 def addLists(l1: List[Any], l2: List[Any]) -> List[Any]:
     r"Add corresponding elements from two lists using zipWith"
-    return zipWith(l1, l2, add)
+    return list(zipWith(l1, l2, add))
 
 
 def sum(l: List[Any]) -> Any:
