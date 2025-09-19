@@ -40,7 +40,7 @@ class ScalarHistory:
     last_fn: Optional[Type[ScalarFunction]] = None
     ctx: Optional[Context] = None
     inputs: Sequence[Scalar] = ()
-   
+
 
 # ## Task 1.2 and 1.4
 # Scalar Forward and Backward
@@ -165,12 +165,17 @@ class Scalar:
         assert h.ctx is not None
 
         last_fn = h.last_fn
-        input_vars = h.inputs
+        input_vars = self.parents
         ctx = h.ctx
 
-        return list(zipWith(input_vars, list(last_fn._backward(ctx, d_output)), lambda x, y: (x, y)))
-    # Чтобы не забыть: возвращает список пар - (входная переменная, производная last_fn по этой переменной)
-        
+        res = []
+        ders = last_fn._backward(ctx, d_output)
+        for i in range(len(input_vars)):
+            if not input_vars[i].is_constant():
+                res.append((input_vars[i], ders[i]))
+        return res
+        # А было так красиво: return list(zipWith(input_vars, list(last_fn._backward(ctx, d_output)), lambda x, y: (x, y)))
+        # Чтобы не забыть: возвращает список пар - (входная переменная, производная last_fn по этой переменной)
 
     def backward(self, d_output: Optional[float] = None) -> None:
         """
